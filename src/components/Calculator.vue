@@ -68,7 +68,7 @@
       <div class="bg_dark_button button">e</div>
       <div class="bg_dark_button button" @click="add('0')">0</div>
       <div class="bg_dark_button button" @click="add('.')">.</div>
-      <div class="bg_dark_button button" @click="calculateAns">=</div>
+      <div class="bg_dark_button button" @click="CalculateAndSave">=</div>
     </div>
   </div>
 </template>
@@ -111,22 +111,30 @@ export default {
       this.queryString = this.removeLastCharIfNeeded(this.queryString, value);
       this.addBracketQuery(value);
       this.queryString += value;
-      // this.calculateAns()
+      this.calculateAns()
     },
     remove() {
       this.queryString = this.queryString.substring(
         0,
         this.queryString.length - 1
       );
-      // this.calculateAns()
+      this.bracketQuery = this.bracketQuery.substring(
+        0,
+        this.bracketQuery.length - 1
+      );
+      this.calculateAns()
     },
-    calculateAns() {
-      for (let i = 0; i < this.noofbrackets; i++) {
-        this.bracketQuery += ")";
-      }
-      this.calculatedAns = Calculate.getResult(this.bracketQuery);
+    CalculateAndSave() {
+      this.calculateAns();
       this.bracketQuery = "(" + this.calculatedAns;
       this.queryString = "" + this.calculatedAns;
+    },
+    calculateAns() {
+      let queryToSend = this.bracketQuery;
+      for (let i = 0; i < this.noofbrackets; i++) {
+        queryToSend += ")";
+      }
+      this.calculatedAns = Calculate.getResult(queryToSend);
     },
     percentage() {},
     clear() {

@@ -56,10 +56,13 @@ export default class Calculate {
         if (operand == '÷') {
             return firstval / secondval;
         }
+        if (operand == '^') {
+            return Math.pow(firstval,secondval);
+        }
     }
 
     static isOperation(lastChar) {
-        return ["*", "%", "+", "-", "÷"].find((val) => lastChar == val);
+        return ["*", "%", "+", "-", "÷","^"].find((val) => lastChar == val);
     }
 
     static isNumber(num) {
