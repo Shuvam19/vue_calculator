@@ -95,7 +95,7 @@ export default {
         this.noofbrackets++;
       }
       this.bracketQuery = this.removeLastCharIfNeeded(this.bracketQuery, value);
-      if (value == "(") this.noofbrackets++;
+      if (value == "(" || value.includes('(')) this.noofbrackets++;
       if (value == ")") this.noofbrackets--;
       this.bracketQuery += value;
     },
@@ -111,7 +111,7 @@ export default {
       this.queryString = this.removeLastCharIfNeeded(this.queryString, value);
       this.addBracketQuery(value);
       this.queryString += value;
-      this.calculateAns()
+      // this.calculateAns()
     },
     remove() {
       this.queryString = this.queryString.substring(
@@ -122,7 +122,7 @@ export default {
         0,
         this.bracketQuery.length - 1
       );
-      this.calculateAns()
+      // this.calculateAns()
     },
     CalculateAndSave() {
       this.calculateAns();
