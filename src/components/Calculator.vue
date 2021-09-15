@@ -16,15 +16,23 @@
 
     <!-- Individual Rows Buttons -->
     <div class="row">
-      <div class="bg_dark_button button">2nd</div>
-      <div class="bg_dark_button button">deg</div>
-      <div class="bg_dark_button button" @click="add('sin(')">sin</div>
-      <div class="bg_dark_button button" @click="add('cos(')">con</div>
-      <div class="bg_dark_button button" @click="add('tan(')">tan</div>
+      <div class="bg_dark_button button" @click="arcOrNot = !arcOrNot">2nd</div>
+      <div class="bg_dark_button button" @click="degOrRadian = !degOrRadian">
+        {{ degOrRadian ? "deg" : "rad" }}
+      </div>
+      <div class="bg_dark_button button" @click="arcOrNot ? add('arcsin(') : add('sin(')">
+        sin<sup>{{ arcOrNot ? "-1" : "" }}</sup>
+      </div>
+      <div class="bg_dark_button button" @click="arcOrNot ? add('arccos(') : add('cos(')">
+        con<sup>{{ arcOrNot ? "-1" : "" }}</sup>
+      </div>
+      <div class="bg_dark_button button" @click="arcOrNot ? add('arctan(') : add('tan(')">
+        tan<sup>{{ arcOrNot ? "-1" : "" }}</sup>
+      </div>
     </div>
 
     <div class="row">
-      <div class="bg_dark_button button" @click="add('^')">xy</div>
+      <div class="bg_dark_button button" @click="add('^')">x<sup>y</sup></div>
       <div class="bg_dark_button button" @click="add('lg(')">lg</div>
       <div class="bg_dark_button button" @click="add('ln(')">ln</div>
       <div class="bg_dark_button button" @click="add('(')">(</div>
@@ -83,34 +91,64 @@ export default {
       calculatedAns: 0,
       bracketQuery: "",
       noofbrackets: 0,
+      degOrRadian: true,
+      arcOrNot: false,
+      symbolStack: [],
     };
   },
   methods: {
-    isOperation(lastChar) {
-      return ["*", "%", "+", "-", "÷"].find((val) => lastChar == val);
-    },
     addBracketQuery(value) {
       if (this.bracketQuery === "") {
         this.bracketQuery += "(";
         this.noofbrackets++;
       }
       this.bracketQuery = this.removeLastCharIfNeeded(this.bracketQuery, value);
-      if (value == "(" || value.includes('(')) this.noofbrackets++;
+      if (value == "(" || value.includes("(")) this.noofbrackets++;
       if (value == ")") this.noofbrackets--;
       this.bracketQuery += value;
     },
     removeLastCharIfNeeded(value, symbol) {
       const length = value.length;
       let lastChar = value.charAt(length - 1);
-      if (this.isOperation(lastChar) && this.isOperation(symbol)) {
+      if (Calculate.isSymbol(lastChar) && Calculate.isSymbol(symbol)) {
+        value = value.substr(0, length - 1);
+      }
+      if (
+        symbol != ")" &&
+        !Calculate.isSymbol(symbol) &&
+        lastChar == "°" &&
+        Calculate.isTrigo(this.symbolStack[this.symbolStack.length - 1])
+      ) {
         value = value.substr(0, length - 1);
       }
       return value;
     },
+    addDegIfNeeded() {
+      let length = this.queryString.length
+      let lastChar = this.queryString.charAt(length - 1);
+      if (
+        this.degOrRadian &&
+        lastChar != ")" &&
+        Calculate.isTrigo(this.symbolStack[this.symbolStack.length - 1])
+      ) {
+        this.addBracketQuery("°");
+        this.queryString += "°";
+      }
+    },
+    addToStackIfNeeded(value) {
+      if (Calculate.isTrigo(value)) {
+        this.symbolStack.push(value);
+      }
+      if (value == ")") {
+        this.symbolStack.pop();
+      }
+    },
     add(value) {
+      this.addToStackIfNeeded(value);
       this.queryString = this.removeLastCharIfNeeded(this.queryString, value);
       this.addBracketQuery(value);
       this.queryString += value;
+      this.addDegIfNeeded();
       // this.calculateAns()
     },
     remove() {
@@ -136,12 +174,12 @@ export default {
       }
       this.calculatedAns = Calculate.getResult(queryToSend);
     },
-    percentage() {},
     clear() {
       this.queryString = "";
       this.bracketQuery = "";
       this.calculatedAns = 0;
       this.noofbrackets = 0;
+      this.symbolStack = [];
     },
   },
 };

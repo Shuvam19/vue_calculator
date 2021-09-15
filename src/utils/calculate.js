@@ -1,12 +1,10 @@
 
 export default class Calculate {
     static getResult(queryString) {
+        console.log(queryString);
         let tokens = queryString.split('')
-        console.log(tokens);
-
         // Stack of values 
         let values = [];
-
         // Stack of Operations
         let operation = [];
 
@@ -14,6 +12,9 @@ export default class Calculate {
             const isOperand = this.getOperation(tokens, i);
             if (isOperand) {
                 if (this.isMathematicalFunction(isOperand[0]) || this.isSymbol(isOperand[0])) {
+                    while(this.isSymbol(isOperand[0]) && operation.length > 0 && this.hasPrecedence(isOperand[0],operation[operation.length - 1])){
+                        values.push(this.solveOperationTwo(values.pop(),values.pop(),operation.pop()));
+                    }
                     operation.push(isOperand[0]);
                 } else if (this.isInteger(isOperand[0])) {
                     values.push(isOperand[0]);
@@ -23,6 +24,8 @@ export default class Calculate {
                     values.push(this.factorial(values.pop()))
                 } else if (isOperand[0] == ')') {
                     [values, operation] = this.solve(values, operation);
+                } else if (isOperand[0] == '°') {
+                    values.push(values.pop() * Math.PI / 180)
                 }
                 i = isOperand[1];
             }
@@ -50,6 +53,24 @@ export default class Calculate {
 
     static isMathematicalFunction(operation) {
         return ['(', 'sin', 'cos', 'tan', 'arcsin', 'arccos', 'arctan', 'lg', 'ln'].find((val) => operation == val);
+    }
+
+    static isTrigo(operation) {
+        return ['(', 'sin(', 'cos(', 'tan(', 'arcsin(', 'arccos(', 'arctan('].find((val) => operation == val);
+    }
+
+    static hasPrecedence(upperOperand,belowOperand) {
+        return this.precedence(upperOperand) < this.precedence(belowOperand);
+    }
+
+    static precedence(operand) {
+        switch(operand) {
+            case '+' :
+            case '-' : return 1;
+            case '*' :
+            case '÷' : return 2;
+            case '^' : return 3;
+        }
     }
 
     static getOperation(tokens, ind) {
@@ -93,12 +114,9 @@ export default class Calculate {
                 values.push(second);
                 ans = this.solveOperationOne(first, operand);
             }
-            console.log(ans);
             values.push(ans);
         }
         operation.pop();
-        console.log(values);
-        console.log(operation);
         return [values, operation];
     }
 
@@ -114,14 +132,14 @@ export default class Calculate {
 
     static solveOperationOne(first, operand) {
         switch (operand) {
-            case 'sin': return Math.sin(first * Math.PI / 180);
-            case 'cos': return Math.cos(first * Math.PI / 180);
-            case 'tan': return Math.tan(first * Math.PI / 180);
+            case 'sin': return Math.sin(first);
+            case 'cos': return Math.cos(first);
+            case 'tan': return Math.tan(first);
             case 'lg': return Math.log10(first);
             case 'ln': return Math.log(first);
-            case 'arcsin': return Math.asin(first * Math.PI / 180);
-            case 'arctan': return Math.acos(first * Math.PI / 180);
-            case 'arccos': return Math.atan(first * Math.PI / 180);
+            case 'arcsin': return Math.asin(first);
+            case 'arctan': return Math.atan(first);
+            case 'arccos': return Math.acos(first);
         }
         return first;
     }
