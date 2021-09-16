@@ -137,9 +137,9 @@ export default class Calculate {
             case 'tan': return Math.tan(first);
             case 'lg': return Math.log10(first);
             case 'ln': return Math.log(first);
-            case 'arcsin': return Math.asin(first);
-            case 'arctan': return Math.atan(first);
-            case 'arccos': return Math.acos(first);
+            case 'arcsin': return Math.asin(first) * 180 / Math.PI;
+            case 'arctan': return Math.atan(first) * 180 / Math.PI;
+            case 'arccos': return Math.acos(first) * 180 / Math.PI;
         }
         return first;
     }

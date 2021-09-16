@@ -10,14 +10,14 @@
       {{ calculatedAns || 0 }}
     </div>
 
-    <div class="bg_dark_button calculated_result">
+    <!-- <div class="bg_dark_button calculated_result">
       {{ bracketQuery || 0 }}
-    </div>
+    </div> -->
 
     <!-- Individual Rows Buttons -->
     <div class="row">
-      <div class="bg_dark_button button" @click="arcOrNot = !arcOrNot">2nd</div>
-      <div class="bg_dark_button button" @click="degOrRadian = !degOrRadian">
+      <div class="bg_dark_button button" @click="switchArc">2nd</div>
+      <div class="bg_dark_button button" @click="degOrRadian = !degOrRadian" :disabled="radianDisabled">
         {{ degOrRadian ? "deg" : "rad" }}
       </div>
       <div class="bg_dark_button button" @click="arcOrNot ? add('arcsin(') : add('sin(')">
@@ -90,6 +90,7 @@ export default {
       queryString: "",
       calculatedAns: 0,
       bracketQuery: "",
+      radianDisabled: false,
       noofbrackets: 0,
       degOrRadian: true,
       arcOrNot: false,
@@ -97,6 +98,13 @@ export default {
     };
   },
   methods: {
+    switchArc() {
+      this.arcOrNot = !this.arcOrNot
+      if(this.arcOrNot) {
+        this.degOrRadian = false;
+        this.radianDisabled = false;
+      } else this.radianDisabled = true;
+    },
     addBracketQuery(value) {
       if (this.bracketQuery === "") {
         this.bracketQuery += "(";
@@ -149,7 +157,7 @@ export default {
       this.addBracketQuery(value);
       this.queryString += value;
       this.addDegIfNeeded();
-      // this.calculateAns()
+      this.calculateAns()
     },
     remove() {
       this.queryString = this.queryString.substring(
@@ -190,7 +198,6 @@ export default {
 
 .whole_calculator {
   width: 400px;
-  margin: 50px auto;
   padding: 30px;
   background: #234;
   border-radius: 5px;
