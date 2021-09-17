@@ -1,7 +1,7 @@
 <template>
   <div class="whole">
     <div class="calculator">
-      <calculator />
+      <calculator @addToHistory="addToHistoryList" />
     </div>
     <div class="history">
       <template v-for="history in historyOfOperation" :key="history.id">
@@ -21,9 +21,14 @@ export default {
   components: {
     Calculator,
   },
+  methods: {
+    addToHistoryList(element) {
+      this.historyOfOperation.push(element);
+    },
+  },
   data() {
     return {
-      historyOfOperation: [{ id: 1, query: "1+2+3+4+5", result: "15" }],
+      historyOfOperation: [],
     };
   },
 };

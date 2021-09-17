@@ -17,16 +17,29 @@
     <!-- Individual Rows Buttons -->
     <div class="row">
       <div class="bg_dark_button button" @click="switchArc">2nd</div>
-      <div class="bg_dark_button button" @click="degOrRadian = !degOrRadian" :disabled="radianDisabled">
+      <div
+        class="bg_dark_button button"
+        @click="degOrRadian = !degOrRadian"
+        :disabled="radianDisabled"
+      >
         {{ degOrRadian ? "deg" : "rad" }}
       </div>
-      <div class="bg_dark_button button" @click="arcOrNot ? add('arcsin(') : add('sin(')">
+      <div
+        class="bg_dark_button button"
+        @click="arcOrNot ? add('arcsin(') : add('sin(')"
+      >
         sin<sup>{{ arcOrNot ? "-1" : "" }}</sup>
       </div>
-      <div class="bg_dark_button button" @click="arcOrNot ? add('arccos(') : add('cos(')">
+      <div
+        class="bg_dark_button button"
+        @click="arcOrNot ? add('arccos(') : add('cos(')"
+      >
         con<sup>{{ arcOrNot ? "-1" : "" }}</sup>
       </div>
-      <div class="bg_dark_button button" @click="arcOrNot ? add('arctan(') : add('tan(')">
+      <div
+        class="bg_dark_button button"
+        @click="arcOrNot ? add('arctan(') : add('tan(')"
+      >
         tan<sup>{{ arcOrNot ? "-1" : "" }}</sup>
       </div>
     </div>
@@ -88,6 +101,7 @@ export default {
   data() {
     return {
       queryString: "",
+      uniqueNo: 0,
       calculatedAns: 0,
       bracketQuery: "",
       radianDisabled: false,
@@ -97,10 +111,11 @@ export default {
       symbolStack: [],
     };
   },
+  emits: ["addToHistory"],
   methods: {
     switchArc() {
-      this.arcOrNot = !this.arcOrNot
-      if(this.arcOrNot) {
+      this.arcOrNot = !this.arcOrNot;
+      if (this.arcOrNot) {
         this.degOrRadian = false;
         this.radianDisabled = false;
       } else this.radianDisabled = true;
@@ -132,7 +147,7 @@ export default {
       return value;
     },
     addDegIfNeeded() {
-      let length = this.queryString.length
+      let length = this.queryString.length;
       let lastChar = this.queryString.charAt(length - 1);
       if (
         this.degOrRadian &&
@@ -157,7 +172,7 @@ export default {
       this.addBracketQuery(value);
       this.queryString += value;
       this.addDegIfNeeded();
-      this.calculateAns()
+      this.calculateAns();
     },
     remove() {
       this.queryString = this.queryString.substring(
@@ -172,6 +187,11 @@ export default {
     },
     CalculateAndSave() {
       this.calculateAns();
+      this.$emit("addToHistory", {
+        id: this.uniqueNo++,
+        query: this.queryString,
+        result: this.calculatedAns,
+      });
       this.bracketQuery = "(" + this.calculatedAns;
       this.queryString = "" + this.calculatedAns;
     },
