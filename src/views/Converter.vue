@@ -4,16 +4,21 @@
       <choose-converter />
     </div>
     <div class="converter">
-      <numpad />
+      <component :is="comp" />
     </div>
   </div>
 </template>
 
 <script>
 import ChooseConverter from "../components/ChooseConverter.vue";
-import Numpad from "../components/numpad/Numpad.vue";
+import converter from "../components/converter";
 export default {
-  components: { Numpad, ChooseConverter },
+  data() {
+    return {
+      comp: "ConverterData",
+    };
+  },
+  components: { ChooseConverter, ...converter },
 };
 </script>
 
