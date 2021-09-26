@@ -1,10 +1,10 @@
 <template>
   <div class="whole">
     <div class="choose-converter">
-      <choose-converter />
+      <choose-converter @ClickedConverter="changeConverter" />
     </div>
     <div class="converter">
-      <component :is="comp" />
+      <component :is="converterName" />
     </div>
   </div>
 </template>
@@ -13,9 +13,14 @@
 import ChooseConverter from "../components/ChooseConverter.vue";
 import converter from "../components/converter";
 export default {
+  methods: {
+    changeConverter(newName) {
+      this.converterName = newName;
+    },
+  },
   data() {
     return {
-      comp: "ConverterData",
+      converterName: "ConverterData",
     };
   },
   components: { ChooseConverter, ...converter },
@@ -33,12 +38,10 @@ export default {
 }
 
 .converter {
-  width: fit-content;
-  height: fit-content;
-  padding: 0 5px;
+  width: 100%;
+  height: 90vh;
   display: flex;
-  flex-direction: row;
-  background: #234;
-  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
 }
 </style>

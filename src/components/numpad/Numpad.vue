@@ -1,52 +1,54 @@
 <template>
-  <div class="whole-numpad">
-    <div class="rows">
-      <individual-button class="button" @click="add('lg(')">
-        7
-      </individual-button>
-      <individual-button class="button" @click="add('ln(')">
-        8
-      </individual-button>
-      <individual-button class="button" @click="add('(')">
-        9
-      </individual-button>
+  <div class="numpad">
+    <div class="numpad-rows">
+      <div class="rows">
+        <individual-button class="button" @click="add('lg(')">
+          7
+        </individual-button>
+        <individual-button class="button" @click="add('ln(')">
+          8
+        </individual-button>
+        <individual-button class="button" @click="add('(')">
+          9
+        </individual-button>
+      </div>
+      <div class="rows">
+        <individual-button class="button" @click="add('lg(')">
+          4
+        </individual-button>
+        <individual-button class="button" @click="add('ln(')">
+          5
+        </individual-button>
+        <individual-button class="button" @click="add('(')">
+          6
+        </individual-button>
+      </div>
+      <div class="rows">
+        <individual-button class="button" @click="add('lg(')">
+          1
+        </individual-button>
+        <individual-button class="button" @click="add('ln(')">
+          2
+        </individual-button>
+        <individual-button class="button" @click="add('(')">
+          3
+        </individual-button>
+      </div>
+      <div class="rows">
+        <individual-button class="button" @click="add('lg(')">
+        </individual-button>
+        <individual-button class="button" @click="add('ln(')">
+          0
+        </individual-button>
+        <individual-button class="button" @click="add('(')">
+          .
+        </individual-button>
+      </div>
     </div>
-    <div class="rows">
-      <individual-button class="button" @click="add('lg(')">
-        4
-      </individual-button>
-      <individual-button class="button" @click="add('ln(')">
-        5
-      </individual-button>
-      <individual-button class="button" @click="add('(')">
-        6
-      </individual-button>
+    <div class="column">
+      <individual-button class="extra-button">AC</individual-button>
+      <individual-button class="extra-button">=</individual-button>
     </div>
-    <div class="rows">
-      <individual-button class="button" @click="add('lg(')">
-        1
-      </individual-button>
-      <individual-button class="button" @click="add('ln(')">
-        2
-      </individual-button>
-      <individual-button class="button" @click="add('(')">
-        3
-      </individual-button>
-    </div>
-    <div class="rows">
-      <individual-button class="button" @click="add('lg(')">
-      </individual-button>
-      <individual-button class="button" @click="add('ln(')">
-        0
-      </individual-button>
-      <individual-button class="button" @click="add('(')">
-        .
-      </individual-button>
-    </div>
-  </div>
-  <div class="column">
-    <individual-button class="extra-button">AC</individual-button>
-    <individual-button class="extra-button">=</individual-button>
   </div>
 </template>
 
@@ -59,7 +61,16 @@ export default {
 </script>
 
 <style scoped>
-.whole-numpad {
+.numpad {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+  padding: 0 5px;
+  /* background: #234; */
+  border-radius: 5px;
+}
+.numpad-rows {
   width: 250px;
   padding: 10px;
 }
