@@ -3,21 +3,34 @@
     <select v-model="selected" class="input-select">
       <option
         v-for="option in options"
-        :key="option"
         class="input-select-items"
+        :value="option.id"
+        :key="option.id"
       >
-        {{ option }}
+        {{ option.name }}
       </option>
     </select>
-    <input class="input-text" />
+    <p class="input-text" @click="$emit('active')">{{ value }}</p>
   </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      selected: "",
+    };
+  },
   props: {
     options: Array,
+    value: String,
   },
+  watch: {
+    selected: function (val) {
+      this.$emit('change',val);
+    },
+  },
+  emits: ["active", "change"],
 };
 </script>
 
@@ -32,6 +45,7 @@ export default {
 
 .input-select {
   width: 40%;
+  height: 40px;
   font-size: 20px;
   border: none;
   background-color: aquamarine;
@@ -39,10 +53,12 @@ export default {
 
 .input-text {
   width: 40%;
-  text-align: end;
+  height: 40px;
   font-size: 20px;
-  border: none;
   background-color: aquamarine;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .input-select-items {

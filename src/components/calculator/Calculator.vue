@@ -217,7 +217,10 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@200&display=swap");
 
 .whole_calculator {
-  width: 400px;
+  width: 100%;
+  min-width: 300px;
+  max-width: 400px;
+  margin: auto;
   padding: 30px;
   background: #234;
   border-radius: 5px;

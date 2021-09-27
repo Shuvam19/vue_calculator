@@ -36,17 +36,20 @@ export default {
 
 <style scoped>
 .whole {
+  height: 90vh;
   display: flex;
   flex-direction: row;
 }
 
 .calculator {
-  margin: 30px;
+  margin: 2vw;
+  width: 40%;
+  display: flex;
 }
 
 .history {
   background-color: #234;
-  width: 100%;
+  width: 60%;
   padding: 15px;
   border-radius: 5px;
   display: flex;
@@ -69,5 +72,23 @@ export default {
   font-size: 2vw;
   color: white;
   font-family: "Azeret Mono", monospace;
+}
+
+@media screen and (max-width: 900px) {
+  .whole {
+    height: auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .calculator {
+    width: 90vw;
+  }
+
+  .history {
+    width: 80vw;
+    height: 300px;
+  }
 }
 </style>

@@ -2,52 +2,55 @@
   <div class="numpad">
     <div class="numpad-rows">
       <div class="rows">
-        <individual-button class="button" @click="add('lg(')">
+        <individual-button class="button" @click="$emit('numClick', '7')">
           7
         </individual-button>
-        <individual-button class="button" @click="add('ln(')">
+        <individual-button class="button" @click="$emit('numClick', '8')">
           8
         </individual-button>
-        <individual-button class="button" @click="add('(')">
+        <individual-button class="button" @click="$emit('numClick', '9')">
           9
         </individual-button>
       </div>
       <div class="rows">
-        <individual-button class="button" @click="add('lg(')">
+        <individual-button class="button" @click="$emit('numClick', '4')">
           4
         </individual-button>
-        <individual-button class="button" @click="add('ln(')">
+        <individual-button class="button" @click="$emit('numClick', '5')">
           5
         </individual-button>
-        <individual-button class="button" @click="add('(')">
+        <individual-button class="button" @click="$emit('numClick', '6')">
           6
         </individual-button>
       </div>
       <div class="rows">
-        <individual-button class="button" @click="add('lg(')">
+        <individual-button class="button" @click="$emit('numClick', '1')">
           1
         </individual-button>
-        <individual-button class="button" @click="add('ln(')">
+        <individual-button class="button" @click="$emit('numClick', '2')">
           2
         </individual-button>
-        <individual-button class="button" @click="add('(')">
+        <individual-button class="button" @click="$emit('numClick', '3')">
           3
         </individual-button>
       </div>
       <div class="rows">
-        <individual-button class="button" @click="add('lg(')">
-        </individual-button>
-        <individual-button class="button" @click="add('ln(')">
+        <individual-button class="button"> </individual-button>
+        <individual-button class="button" @click="$emit('numClick', '0')">
           0
         </individual-button>
-        <individual-button class="button" @click="add('(')">
+        <individual-button class="button" @click="$emit('numClick', '.')">
           .
         </individual-button>
       </div>
     </div>
     <div class="column">
-      <individual-button class="extra-button">AC</individual-button>
-      <individual-button class="extra-button">=</individual-button>
+      <individual-button class="extra-button" @click="$emit('clear')">
+        AC
+      </individual-button>
+      <individual-button class="extra-button" @click="$emit('equals')">
+        =
+      </individual-button>
     </div>
   </div>
 </template>
@@ -56,7 +59,7 @@
 import IndividualButton from "../button/IndividualButton.vue";
 export default {
   components: { IndividualButton },
-  emits: {},
+  emits: ["numClick", "equals", "clear"],
 };
 </script>
 
