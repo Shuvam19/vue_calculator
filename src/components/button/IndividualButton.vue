@@ -25,5 +25,6 @@ export default {
 
 .bg_dark_button:hover {
   background: #3d5875;
+  cursor: pointer;
 }
 </style>

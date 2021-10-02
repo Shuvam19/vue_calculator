@@ -31,6 +31,7 @@ export default {
       isFromActive: true,
       from: { id: "1", val: "" },
       to: { id: "1", val: "" },
+      factor: 1024,
       unitOptions: [
         { id: 1, name: "Byte B" },
         { id: 2, name: "Kilobyte KB" },
@@ -54,26 +55,38 @@ export default {
     },
     addFrom(num) {
       this.from.val += num;
-      this.calculateValue(this.from, this.to);
+      this.to.val = this.calculateValue(
+        this.from.val,
+        this.from.id,
+        this.to.id
+      );
     },
     addTo(num) {
       this.to.val += num;
-      this.calculateValue(this.to, this.from);
+      this.from.val = this.calculateValue(
+        this.to.val,
+        this.to.id,
+        this.from.id
+      );
     },
-    calculateValue(here, there) {
-      console.log("Came geere");
-      if (here.id == there.id) {
-        here.val = there.val;
-        console.log(here, there);
-        console.log(this.from, this.to);
-      } else if (here.id < there.id) {
-        this.upWards();
+    calculateValue(value, from, to) {
+      if (from == to) {
+        return value;
+      }
+      if (from > to) {
+        let val = value;
+        for (let i = to; i < from; i++) {
+          val = val * this.factor;
+        }
+        return val;
       } else {
-        this.downWards();
+        let val = value;
+        for (let i = from; i < to; i++) {
+          val = val / this.factor;
+        }
+        return val;
       }
     },
-    upWards() {},
-    downWards() {},
   },
   components: { Numpad, InputNumber },
   name: "ConverterData",
@@ -82,6 +95,7 @@ export default {
 
 <style scoped>
 .converter-data {
+  width: 60%;
   display: flex;
   flex-direction: column;
   align-items: center;

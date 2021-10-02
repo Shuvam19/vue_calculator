@@ -27,7 +27,7 @@ export default {
   },
   watch: {
     selected: function (val) {
-      this.$emit('change',val);
+      this.$emit("change", val);
     },
   },
   emits: ["active", "change"],
@@ -48,17 +48,21 @@ export default {
   height: 40px;
   font-size: 20px;
   border: none;
-  background-color: aquamarine;
+  color: white;
+  background-color: #31475e;
+  border-radius: 5px;
 }
 
 .input-text {
   width: 40%;
   height: 40px;
   font-size: 20px;
-  background-color: aquamarine;
+  color: white;
+  background-color: #31475e;
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  border-radius: 5px;
 }
 
 .input-select-items {
