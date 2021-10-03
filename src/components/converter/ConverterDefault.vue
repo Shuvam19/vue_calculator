@@ -33,16 +33,10 @@ export default {
       isFromActive: true,
       from: { id: 1, val: 0 },
       to: { id: 1, val: 0 },
-      factor: 1024,
-      unitOptions: [
-        { id: 1, name: "Byte B" },
-        { id: 2, name: "Kilobyte KB" },
-        { id: 3, name: "Megabyte MB" },
-        { id: 4, name: "Gigabyte GB" },
-        { id: 5, name: "Terabyte TB" },
-        { id: 6, name: "Petabyte PB" },
-      ],
     };
+  },
+  props: {
+    unitOptions: Array,
   },
   methods: {
     clearData() {
@@ -84,20 +78,20 @@ export default {
       if (from > to) {
         let val = value;
         for (let i = to; i < from; i++) {
-          val = val * this.factor;
+          val = val * this.unitOptions[i-1].factor;
         }
         return val;
       } else {
         let val = value;
         for (let i = from; i < to; i++) {
-          val = val / this.factor;
+          val = val / this.unitOptions[i-1].factor;
         }
         return val;
       }
     },
   },
   components: { Numpad, InputNumber },
-  name: "ConverterData",
+  name: "ConverterDefault",
 };
 </script>
 

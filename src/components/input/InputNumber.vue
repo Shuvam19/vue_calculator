@@ -23,12 +23,27 @@ export default {
   },
   props: {
     options: Array,
-    value: String,
+    value: Number,
+    id: Number,
   },
   watch: {
     selected: function (val) {
       this.$emit("change", val);
     },
+    id: function (val) {
+      this.options.forEach((part) => {
+        if (part.id == val) {
+          this.selected = part.id;
+        }
+      });
+    },
+  },
+  created() {
+    this.options.forEach((part) => {
+      if (part.id == this.id) {
+        this.selected = part.id;
+      }
+    });
   },
   emits: ["active", "change"],
 };
