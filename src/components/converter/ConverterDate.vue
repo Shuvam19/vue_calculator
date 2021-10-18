@@ -3,11 +3,11 @@
     <div class="input-fields">
       <div class="from-date">
         <p class="default-input-text">From</p>
-        <input type="date" class="default-input" />
+        <input type="date" v-model="fromDate" class="default-input" />
       </div>
       <div class="to-date">
         <p class="default-input-text">To</p>
-        <input type="date" class="default-input" />
+        <input type="date" v-model="toDate" class="default-input" />
       </div>
     </div>
     <div class="difference">
@@ -15,25 +15,25 @@
       <div class="difference-numbers">
         <div class="difference-years">
           <p>Years</p>
-          <p>0</p>
+          <p>{{ diffInYears ? diffInYears : 0 }}</p>
         </div>
         <div class="difference-months">
           <p>Months</p>
-          <p>0</p>
+          <p>{{diffInMon ? diffInMon : 0}}</p>
         </div>
         <div class="difference-days">
           <p>Days</p>
-          <p>0</p>
+          <p>{{ diffInDays ? diffInDays : 0 }}</p>
         </div>
       </div>
       <div class="difference-from-to">
         <div class="difference-from">
           <p>From</p>
-          <p>Oct 16,2021</p>
+          <p>{{ fromDate }}</p>
         </div>
         <div class="difference-to">
-          <p>From</p>
-          <p>Oct 16,2021</p>
+          <p>To</p>
+          <p>{{ toDate }}</p>
         </div>
       </div>
     </div>
@@ -43,6 +43,37 @@
 <script>
 export default {
   components: {},
+  data() {
+    return {
+      fromDate: "",
+      toDate: "",
+      diffmills: "",
+    };
+  },
+  computed: {
+    diffInDays: function () {
+      return this.diffmills / (1000 * 60 * 60 * 24) - (this.diffInYears * 365) - (this.diffInMon * 30);
+    },
+    diffInMon: function () {
+      return parseInt(
+        ((this.diffmills / (1000 * 60 * 60 * 24)) - (this.diffInYears * 365)) / 30
+      );
+    },
+    diffInYears: function () {
+      return parseInt(this.diffmills / (1000 * 60 * 60 * 24 * 365));
+    },
+  },
+  methods: {
+    calculatediff() {
+      var datefrom = new Date(this.fromDate);
+      var dateto = new Date(this.toDate);
+      this.diffmills = Math.abs(dateto - datefrom);
+    },
+  },
+  watch: {
+    fromDate: "calculatediff",
+    toDate: "calculatediff",
+  },
 };
 </script>
 
@@ -109,7 +140,7 @@ export default {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between
+  justify-content: space-between;
 }
 
 .defference-text {
