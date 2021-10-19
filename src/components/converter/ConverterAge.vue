@@ -3,11 +3,21 @@
     <div class="input-fields">
       <div class="from-date">
         <p class="default-input-text">Date Of Birth</p>
-        <input type="date" v-model="fromDate" class="default-input" />
+        <input
+          type="date"
+          :max="toDate"
+          v-model="fromDate"
+          class="default-input"
+        />
       </div>
       <div class="to-date">
-        <p class="default-input-text">To</p>
-        <input type="date" v-model="toDate" class="default-input" />
+        <p class="default-input-text">ToDay</p>
+        <input
+          type="date"
+          :min="fromDate"
+          v-model="toDate"
+          class="default-input"
+        />
       </div>
     </div>
     <div class="difference">
@@ -15,13 +25,13 @@
         <div class="age">
           <p style="font-size: 20px">Age</p>
           <div class="years">
-            <p style="font-size: 25px">11</p>
+            <p style="font-size: 25px">{{ yearsAlive }}</p>
             <p class="font-15">years</p>
           </div>
           <div class="months-and-days">
-            <p class="font-15">1</p>
+            <p class="font-15">{{ monthsAlive }}</p>
             <p class="font-15">months</p>
-            <p class="font-15">28</p>
+            <p class="font-15">{{ daysAlive }}</p>
             <p class="font-15">days</p>
           </div>
         </div>
@@ -29,9 +39,9 @@
           <p style="font-size: 20px">Next Birthday</p>
           <p class="font-15">Tueday</p>
           <div class="time-left-for-birthday">
-            <p class="font-15">1</p>
+            <p class="font-15">{{ nextBirthDayMonths }}</p>
             <p class="font-15">months</p>
-            <p class="font-15">28</p>
+            <p class="font-15">{{ nextBirthDayDays }}</p>
             <p class="font-15">days</p>
           </div>
         </div>
@@ -41,30 +51,30 @@
         <div class="all-differences">
           <div class="row">
             <div class="years-diffrence">
-              <p>11</p>
+              <p>{{ diffInYears }}</p>
               <p>years</p>
             </div>
             <div class="months-difference">
-              <p>11</p>
-              <p>years</p>
+              <p>{{ diffInMonths }}</p>
+              <p>Months</p>
             </div>
             <div class="weeks-difference">
-              <p>11</p>
-              <p>years</p>
+              <p>{{ diffInWeeks }}</p>
+              <p>Weeks</p>
             </div>
           </div>
           <div class="row">
             <div class="days-difference">
-              <p>11</p>
-              <p>years</p>
+              <p>{{ diffInDays }}</p>
+              <p>Days</p>
             </div>
             <div class="hours-difference">
-              <p>11</p>
-              <p>years</p>
+              <p>{{ diffInHours }}</p>
+              <p>Hours</p>
             </div>
             <div class="minutes-difference">
-              <p>11</p>
-              <p>years</p>
+              <p>{{ diffInMin }}</p>
+              <p>Minutes</p>
             </div>
           </div>
         </div>
@@ -74,7 +84,65 @@
 </template>
 
 <script>
-export default {};
+import DateConverter from "../../utils/date-converter.js";
+export default {
+  data() {
+    return {
+      fromDate: new Date().toISOString().substr(0, 10),
+      toDate: new Date().toISOString().substr(0, 10),
+      diffmills: "",
+      diffmillsNext: "",
+    };
+  },
+  computed: {
+    diffInMin: function () {
+      return DateConverter.getNoOfMin(this.diffmills);
+    },
+    diffInHours: function () {
+      return DateConverter.getNoOfHours(this.diffmills);
+    },
+    diffInDays: function () {
+      return DateConverter.getNoOfDays(this.diffmills);
+    },
+    diffInWeeks: function () {
+      return DateConverter.getNoOfWeeks(this.diffmills);
+    },
+    diffInMonths: function () {
+      return DateConverter.getNoOfMonths(this.diffmills);
+    },
+    diffInYears: function () {
+      return DateConverter.getNoOfYears(this.diffmills);
+    },
+    yearsAlive: function () {
+      return DateConverter.getNoOfRemainingYears(this.diffmills);
+    },
+    monthsAlive: function () {
+      return DateConverter.getNoOfRemainingMonths(this.diffmills);
+    },
+    daysAlive: function () {
+      return DateConverter.getNoOfRemainingDays(this.diffmills);
+    },
+    nextBirthDayMonths: function () {
+      return DateConverter.getNoOfRemainingMonths(this.diffmillsNext);
+    },
+    nextBirthDayDays: function () {
+      return DateConverter.getNoOfRemainingDays(this.diffmillsNext);
+    },
+  },
+  methods: {
+    calculatediff() {
+      var datefrom = new Date(this.fromDate);
+      var dateto = new Date(this.toDate);
+      this.diffmills = Math.abs(dateto - datefrom);
+      datefrom.setFullYear(datefrom.getFullYear() + 1);
+      this.diffmillsNext = Math.abs(dateto - datefrom);
+    },
+  },
+  watch: {
+    fromDate: "calculatediff",
+    toDate: "calculatediff",
+  },
+};
 </script>
 
 <style scoped>

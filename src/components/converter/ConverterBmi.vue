@@ -1,20 +1,34 @@
 <template>
   <div class="converter-bmi">
     <div class="input-fields">
-      <!-- <input-number /> -->
-      <!-- <input-number /> -->
+      <input-number :options="weightOptions" />
+      <input-number :options="heightOptions" />
     </div>
     <div class="numpad">
-        <numpad />
+      <numpad />
     </div>
   </div>
 </template>
 
 <script>
-// import InputNumber from "../input/InputNumber.vue";
-import Numpad from '../numpad/Numpad.vue';
+import InputNumber from "../input/InputNumber.vue";
+import Numpad from "../numpad/Numpad.vue";
 export default {
-  components: {  Numpad },
+  components: { InputNumber, Numpad },
+  data() {
+    return {
+      weightOptions: [
+        { id: 1, name: "Kilograms" },
+        { id: 2, name: "Pounds" },
+      ],
+      heightOptions: [
+        { id: 1, name: "Centimeters" },
+        { id: 2, name: "Meters" },
+        { id: 3, name: "Feet" },
+        { id: 4, name: "Inches" },
+      ],
+    };
+  },
 };
 </script>
 

@@ -3,11 +3,11 @@
     <div class="input-fields">
       <div class="from-date">
         <p class="default-input-text">From</p>
-        <input type="date" v-model="fromDate" class="default-input" />
+        <input type="date" :max="toDate" v-model="fromDate" class="default-input" />
       </div>
       <div class="to-date">
         <p class="default-input-text">To</p>
-        <input type="date" v-model="toDate" class="default-input" />
+        <input type="date" :min="fromDate" v-model="toDate" class="default-input" />
       </div>
     </div>
     <div class="difference">
@@ -41,26 +41,25 @@
 </template>
 
 <script>
+import DateConverter from "../../utils/date-converter.js";
 export default {
   components: {},
   data() {
     return {
-      fromDate: "",
-      toDate: "",
+      fromDate: new Date().toISOString().substr(0, 10),
+      toDate: new Date().toISOString().substr(0, 10),
       diffmills: "",
     };
   },
   computed: {
     diffInDays: function () {
-      return this.diffmills / (1000 * 60 * 60 * 24) - (this.diffInYears * 365) - (this.diffInMon * 30);
+      return DateConverter.getNoOfRemainingDays(this.diffmills);
     },
     diffInMon: function () {
-      return parseInt(
-        ((this.diffmills / (1000 * 60 * 60 * 24)) - (this.diffInYears * 365)) / 30
-      );
+      return DateConverter.getNoOfRemainingMonths(this.diffmills);
     },
     diffInYears: function () {
-      return parseInt(this.diffmills / (1000 * 60 * 60 * 24 * 365));
+      return DateConverter.getNoOfRemainingYears(this.diffmills);
     },
   },
   methods: {
