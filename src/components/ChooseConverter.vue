@@ -29,7 +29,7 @@ export default {
         { id: 10, name: "Speed", to: "ConverterSpeed" },
         { id: 11, name: "Time", to: "ConverterTime" },
         { id: 12, name: "Mass", to: "ConverterMass" },
-        { id: 13, name: "Number System", to: "ConverterNumberSystem" },
+        { id: 13, name: "Number System", to: "ConverterNumericalSystem" },
       ],
     };
   },

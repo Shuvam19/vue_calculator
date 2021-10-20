@@ -33,13 +33,13 @@ export default {
 </script>
 
 <style>
-.converter-data {
+.converter-bmi {
   width: 60%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.input-feilds {
+.input-fields {
   width: 100%;
 }
 </style>
