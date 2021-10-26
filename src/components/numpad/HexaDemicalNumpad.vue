@@ -2,44 +2,74 @@
   <div class="numpad">
     <div class="numpad-rows">
       <div class="rows">
-        <individual-button class="button" @click="$emit('numClick', '7')">
+        <individual-button class="button" @click="$emit('clear')">
           AC
         </individual-button>
-        <individual-button class="button" @click="$emit('numClick', '7')">
+        <individual-button class="button" @click="$emit('backspace')">
           clear
         </individual-button>
-        <individual-button class="button" @click="$emit('numClick', '7')">
+        <individual-button
+          class="button"
+          @click="isHexadecimal ? $emit('numClick', 'F') : ''"
+        >
           F
         </individual-button>
-        <individual-button class="button" @click="$emit('numClick', '7')">
+        <individual-button
+          class="button"
+          @click="isHexadecimal ? $emit('numClick', 'E') : ''"
+        >
           E
         </individual-button>
       </div>
       <div class="rows">
-        <individual-button class="button" @click="$emit('numClick', '7')">
+        <individual-button
+          class="button"
+          @click="isBinary ? '' : $emit('numClick', '7')"
+        >
           7
         </individual-button>
-        <individual-button class="button" @click="$emit('numClick', '8')">
+        <individual-button
+          class="button"
+          @click="isOctal || isBinary ? '' : $emit('numClick', '8')"
+        >
           8
         </individual-button>
-        <individual-button class="button" @click="$emit('numClick', '9')">
+        <individual-button
+          class="button"
+          @click="isOctal || isBinary ? '' : $emit('numClick', '9')"
+        >
           9
         </individual-button>
-        <individual-button class="button" @click="$emit('numClick', '9')">
+        <individual-button
+          class="button"
+          @click="isHexadecimal ? $emit('numClick', 'D') : ''"
+        >
           D
         </individual-button>
       </div>
       <div class="rows">
-        <individual-button class="button" @click="$emit('numClick', '4')">
+        <individual-button
+          class="button"
+          @click="isBinary ? '' : $emit('numClick', '4')"
+        >
           4
         </individual-button>
-        <individual-button class="button" @click="$emit('numClick', '5')">
+        <individual-button
+          class="button"
+          @click="isBinary ? '' : $emit('numClick', '5')"
+        >
           5
         </individual-button>
-        <individual-button class="button" @click="$emit('numClick', '6')">
+        <individual-button
+          class="button"
+          @click="isBinary ? '' : $emit('numClick', '6')"
+        >
           6
         </individual-button>
-        <individual-button class="button" @click="$emit('numClick', 'C')">
+        <individual-button
+          class="button"
+          @click="isHexadecimal ? $emit('numClick', 'C') : ''"
+        >
           C
         </individual-button>
       </div>
@@ -47,13 +77,22 @@
         <individual-button class="button" @click="$emit('numClick', '1')">
           1
         </individual-button>
-        <individual-button class="button" @click="$emit('numClick', '2')">
+        <individual-button
+          class="button"
+          @click="isBinary ? '' : $emit('numClick', '2')"
+        >
           2
         </individual-button>
-        <individual-button class="button" @click="$emit('numClick', '3')">
+        <individual-button
+          class="button"
+          @click="isBinary ? '' : $emit('numClick', '3')"
+        >
           3
         </individual-button>
-        <individual-button class="button" @click="$emit('numClick', '3')">
+        <individual-button
+          class="button"
+          @click="isHexadecimal ? $emit('numClick', 'B') : ''"
+        >
           B
         </individual-button>
       </div>
@@ -65,8 +104,11 @@
         <individual-button class="button" @click="$emit('numClick', '.')">
           .
         </individual-button>
-        <individual-button class="button" @click="$emit('numClick', '.')">
-          .
+        <individual-button
+          class="button"
+          @click="isHexadecimal ? $emit('numClick', 'A') : ''"
+        >
+          A
         </individual-button>
       </div>
     </div>
@@ -77,7 +119,23 @@
 import IndividualButton from "../button/IndividualButton.vue";
 export default {
   components: { IndividualButton },
-  emits: ["numClick", "equals", "clear"],
+  emits: ["numClick", "backspace", "clear"],
+  props: ["current"],
+  computed: {
+    isBinary: function () {
+      console.log(this.current);
+      return this.current == 1;
+    },
+    isOctal: function () {
+      return this.current == 2;
+    },
+    isDecimal: function () {
+      return this.current == 3;
+    },
+    isHexadecimal: function () {
+      return this.current == 4;
+    },
+  },
 };
 </script>
 
@@ -115,6 +173,7 @@ export default {
   padding: 20px 10px 20px 0px;
   justify-content: space-between;
 }
+
 .extra-button {
   height: 37%;
 }
